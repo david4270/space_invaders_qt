@@ -19,12 +19,22 @@ void Bullet::move(){
         if(enemy){
 
             int idx = int((enemy->x()) / (800 / (game->getNumPlayers())) );
+            //idx calculation, out of bound, sigsev. Should revisit all idx calculation and boundary calculation here
+            //also draw a line between players
+            //player # selection needed - another screen
+            //introduce different resolutions (800x600, 1280x720, 1920x1080 etc)
+            //make sure to delete debug codes!
 
-            game->scores[idx]->hitEnemy();
+            if(game->scores[idx]){
+                qDebug() << "score of" << idx << "increases";
+                game->scores[idx]->hitEnemy();
+            }
+
 
             scene()->removeItem(enemy);
             scene()->removeItem(this);
             delete enemy;
+            enemy = NULL;
             delete this;
             return;
         }

@@ -28,19 +28,29 @@ void Enemy::move(){
         Player * player = dynamic_cast<Player *>(i);
         if(player){
             int idx = int((player->x()) / (800 / numPlayers) );
-            game -> healths[idx] -> healthDamage();
+            if(game->healths[idx]){
+                game -> healths[idx] -> healthDamage();
+            }
+
 
             if(game -> healths[idx] -> getHealth() == 0){
                 scene()->removeItem(player);
                 delete player;
                 player = NULL;
 
+                scene()->removeItem(game->healths[idx]);
+                delete game->healths[idx];
+                game->healths[idx] = NULL;
 
+                scene()->removeItem(game->scores[idx]);
+                delete game->scores[idx];
+                game->scores[idx] = NULL;
                 qDebug() << "Player" << idx << "slained";
             }
 
             scene()->removeItem(this);
             delete this;
+
             return;
         }
     }
@@ -51,7 +61,9 @@ void Enemy::move(){
     if(pos().y() - pixmap().height() > 600){
         int idx = std::min(int((pos().x()) / (800 / numPlayers) ), numPlayers-1);
         qDebug() << idx << pos().x();
-        game->scores[idx]->enemyHitGround();
+        if(game->scores[idx]){
+            game->scores[idx]->enemyHitGround();
+        }
         scene()->removeItem(this);
         delete this;
     }
