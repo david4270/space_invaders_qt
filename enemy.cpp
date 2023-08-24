@@ -33,6 +33,8 @@ void Enemy::move(){
             if(game -> healths[idx] -> getHealth() == 0){
                 scene()->removeItem(player);
                 delete player;
+                player = NULL;
+
 
                 qDebug() << "Player" << idx << "slained";
             }
