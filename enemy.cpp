@@ -34,7 +34,7 @@ void Enemy::move(){
                 scene()->removeItem(player);
                 delete player;
 
-                qDebug() << "Player slained";
+                qDebug() << "Player" << idx << "slained";
             }
 
             scene()->removeItem(this);

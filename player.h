@@ -18,8 +18,6 @@ class Player: public QObject, public QGraphicsPixmapItem{
 public:
     Player(int no = 0, int tp = 1, QGraphicsItem *parent = 0);
 
-    //void keyPressEvent(QKeyEvent *event);
-
     int getPlayerNo();
     void setPlayerNo(int no);
 
