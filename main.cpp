@@ -11,7 +11,7 @@ int widthScreen;
 
 int main(int argc, char *argv[]){
     QApplication a(argc, argv);
-    /*
+
     QGraphicsScene * startScreen = new QGraphicsScene();
     startScreen -> setSceneRect(0,0,800,600);
 
@@ -22,9 +22,9 @@ int main(int argc, char *argv[]){
     startView -> setFixedSize(800,600);
 
     startView -> show();
-    */
 
-    int numPlayers = 4; //by default
+
+    int numPlayers = 2; //by default
 
     heightScreen = 600;
     widthScreen = 800;

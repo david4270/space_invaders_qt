@@ -10,8 +10,8 @@ Enemy::Enemy(int playerNo, QGraphicsItem *parent): QObject(), QGraphicsPixmapIte
     setPixmap(QPixmap(":/images/Enemy.png").scaledToHeight(100));
     setRotation(180);
 
-    int random_number = rand() % (widthScreen/numPlayers) - (this->pixmap().width()/2);
-    setPos(random_number + playerNo * (widthScreen/numPlayers) + (this->pixmap().width()), 0);
+    int random_number = rand() % ((widthScreen/numPlayers) - (this->pixmap().width())) ;
+    setPos(random_number + playerNo * (widthScreen/numPlayers) + (this->pixmap().width()/2), 0);
 
 
 
