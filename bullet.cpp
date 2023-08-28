@@ -2,6 +2,7 @@
 #include "enemy.h"
 
 extern Game * game;
+extern int widthScreen;
 
 Bullet::Bullet(QGraphicsItem *parent): QObject(), QGraphicsPixmapItem(parent){
     setPixmap(QPixmap(":/images/Bullet.png").scaledToHeight(50));
@@ -18,12 +19,12 @@ void Bullet::move(){
         Enemy * enemy = dynamic_cast<Enemy *>(i);
         if(enemy){
 
-            int idx = int((enemy->x()) / (800 / (game->getNumPlayers())) );
+            int idx = int((enemy->x()) / (widthScreen / (game->getNumPlayers())) );
             //idx calculation, out of bound, sigsev. Should revisit all idx calculation and boundary calculation here
             //also draw a line between players
             //player # selection needed - another screen
-            //introduce different resolutions (800x600, 1280x720, 1920x1080 etc)
-            //make sure to delete debug codes!
+            //introduce different resolutions (800x600, 1280x720, 1920x1080 etc) [WIP]
+            //make sure to delete debug codes! + add comments!
 
             if(game->scores[idx]){
                 qDebug() << "score of" << idx << "increases";

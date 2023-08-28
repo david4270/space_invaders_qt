@@ -6,6 +6,8 @@
 #include "game.h"
 
 Game * game;
+int heightScreen;
+int widthScreen;
 
 int main(int argc, char *argv[]){
     QApplication a(argc, argv);
@@ -23,6 +25,9 @@ int main(int argc, char *argv[]){
     */
 
     int numPlayers = 2; //by default
+
+    heightScreen = 600;
+    widthScreen = 800;
 
     game = new Game(numPlayers);
 
