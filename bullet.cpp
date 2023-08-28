@@ -41,7 +41,7 @@ void Bullet::move(){
         }
     }
 
-    setPos(x(), y()-10);
+    setPos(x(), y()-this->pixmap().width());
 
     if(pos().y() < 0){
 

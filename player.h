@@ -21,8 +21,8 @@ public:
     int getPlayerNo();
     void setPlayerNo(int no);
 
-    Score * score;
-    Health * health;
+    //Score * score;
+    //Health * health;
 public slots:
     void spawn();
 private:

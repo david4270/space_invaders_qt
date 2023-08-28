@@ -7,12 +7,13 @@ extern int heightScreen;
 Enemy::Enemy(int playerNo, QGraphicsItem *parent): QObject(), QGraphicsPixmapItem(parent){
     int numPlayers = game -> getNumPlayers();
 
-
-    int random_number = rand() % (widthScreen/numPlayers);
-    setPos(random_number + playerNo * (widthScreen/numPlayers) + 50, 0);
-
     setPixmap(QPixmap(":/images/Enemy.png").scaledToHeight(100));
     setRotation(180);
+
+    int random_number = rand() % (widthScreen/numPlayers) - (this->pixmap().width()/2);
+    setPos(random_number + playerNo * (widthScreen/numPlayers) + (this->pixmap().width()), 0);
+
+
 
     QTimer * timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(move()));
@@ -36,9 +37,15 @@ void Enemy::move(){
 
 
             if(game -> healths[idx] -> getHealth() == 0){
+                /*
                 scene()->removeItem(player);
                 delete player;
                 player = NULL;
+                */
+                scene()->removeItem(game->players[idx]);
+                delete game->players[idx];
+                game->players[idx] = NULL;
+
 
                 scene()->removeItem(game->healths[idx]);
                 delete game->healths[idx];
