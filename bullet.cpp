@@ -20,8 +20,8 @@ void Bullet::move(){
         if(enemy){
 
             int idx = int((enemy->x()) / (widthScreen / (game->getNumPlayers())) );
-            //idx calculation, out of bound, sigsev. Should revisit all idx calculation and boundary calculation here
-            //also draw a line between players
+            //idx calculation, out of bound, sigsev. Should revisit all idx calculation and boundary calculation here [seems okay?]
+            //also draw a line between players [seems okay?]
             //player # selection needed - another screen
             //introduce different resolutions (800x600, 1280x720, 1920x1080 etc) [WIP]
             //make sure to delete debug codes! + add comments!

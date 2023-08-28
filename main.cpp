@@ -24,7 +24,7 @@ int main(int argc, char *argv[]){
     startView -> show();
     */
 
-    int numPlayers = 2; //by default
+    int numPlayers = 4; //by default
 
     heightScreen = 600;
     widthScreen = 800;

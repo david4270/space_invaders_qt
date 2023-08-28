@@ -46,6 +46,11 @@ Game::Game(int np, QWidget *parent){
 
     show();
 
+    for(int i=1; i<numPlayers; i++){
+        scene->addLine((widthScreen/numPlayers)*i,0,(widthScreen/numPlayers)*i,heightScreen);
+        this->update();
+    }
+
 
 }
 

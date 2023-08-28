@@ -28,7 +28,6 @@ public:
     Score ** scores;
     Health ** healths;
 
-
 };
 
 #endif // GAME_H
