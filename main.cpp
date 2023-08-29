@@ -14,7 +14,7 @@ int main(int argc, char *argv[]){
 
     QGraphicsScene * startScreen = new QGraphicsScene();
     startScreen -> setSceneRect(0,0,800,600);
-
+    /*
     QGraphicsView * startView = new QGraphicsView(startScreen);
 
     startView -> setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -22,7 +22,8 @@ int main(int argc, char *argv[]){
     startView -> setFixedSize(800,600);
 
     startView -> show();
-
+    */
+    setScene(startScreen);
 
     int numPlayers = 2; //by default
 
