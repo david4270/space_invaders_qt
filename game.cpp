@@ -10,7 +10,7 @@ Game::Game(QWidget *parent){
 
     scene = new QGraphicsScene();
     scene -> setSceneRect(0,0,widthScreen,heightScreen);
-    //setBackgroundBrush(QBrush(QImage(":/images/Background.png")));
+    setBackgroundBrush(QBrush(QImage(":/images/Startscreen.png")));
 
     startText = new QGraphicsTextItem;
     startText->setPlainText("Welcome to the game");
@@ -41,7 +41,7 @@ void Game::gameHelper(){
     delete helperText;
     helperText = NULL;
 
-    setBackgroundBrush(QBrush(QImage(":/images/Background.png")));
+    setBackgroundBrush(QBrush(QImage(":/images/Background2.png")));
     QTimer * timer = new QTimer();
 
     players = new Player * [numPlayers];

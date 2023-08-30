@@ -4,5 +4,7 @@
         <file>Bullet.png</file>
         <file>Enemy.png</file>
         <file>Player.png</file>
+        <file>Background2.png</file>
+        <file>Startscreen.png</file>
     </qresource>
 </RCC>
