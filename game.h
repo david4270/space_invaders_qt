@@ -20,6 +20,7 @@ private:
 public:
     Game(QWidget * parent = 0);
     int getNumPlayers();
+    void gameHelper();
 
     void keyPressEvent(QKeyEvent * event);
 
@@ -27,8 +28,7 @@ public:
     Player ** players;
     Score ** scores;
     Health ** healths;
-public slots:
-    void gameHelper();
+
 };
 
 #endif // GAME_H
