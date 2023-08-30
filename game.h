@@ -12,13 +12,13 @@
 #include "health.h"
 #include "bullet.h"
 
-class Game: public QGraphicsView{
 
+class Game: public QGraphicsView{
 private:
-    int numPlayers;
+    int numPlayers = 0;
 
 public:
-    Game(int np, QWidget * parent = 0);
+    Game(QWidget * parent = 0);
     int getNumPlayers();
 
     void keyPressEvent(QKeyEvent * event);
@@ -27,7 +27,8 @@ public:
     Player ** players;
     Score ** scores;
     Health ** healths;
-
+public slots:
+    void gameHelper();
 };
 
 #endif // GAME_H
