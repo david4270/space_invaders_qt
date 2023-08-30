@@ -10,14 +10,24 @@ Game::Game(QWidget *parent){
 
     scene = new QGraphicsScene();
     scene -> setSceneRect(0,0,widthScreen,heightScreen);
-    setBackgroundBrush(QBrush(QImage(":/images/Background.png")));
+    //setBackgroundBrush(QBrush(QImage(":/images/Background.png")));
+
+    startText = new QGraphicsTextItem;
+    startText->setPlainText("Welcome to the game");
+    startText->setFont(QFont("Comic sans", 48));
+    startText->setPos(widthScreen/2 - startText->boundingRect().width()/2,heightScreen/5);
+    scene->addItem(startText);
+
+    helperText = new QGraphicsTextItem;
+    helperText->setPlainText("Press 1-4 to select # of players");
+    helperText->setFont(QFont("Comic sans", 16));
+    helperText->setPos(widthScreen/2 - helperText->boundingRect().width()/2,4*heightScreen/5);
+    scene->addItem(helperText);
 
     setScene(scene);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(widthScreen,heightScreen);
-
-
 }
 
 int Game::getNumPlayers(){
@@ -25,6 +35,13 @@ int Game::getNumPlayers(){
 }
 
 void Game::gameHelper(){
+    delete startText;
+    startText = NULL;
+
+    delete helperText;
+    helperText = NULL;
+
+    setBackgroundBrush(QBrush(QImage(":/images/Background.png")));
     QTimer * timer = new QTimer();
 
     players = new Player * [numPlayers];

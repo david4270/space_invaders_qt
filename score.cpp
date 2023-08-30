@@ -7,7 +7,7 @@ Score::Score(QGraphicsItem *parent): QGraphicsTextItem(parent){
 
     setPlainText(QString("Score: ")+QString::number(score));
     setDefaultTextColor(Qt::blue);
-    setFont(QFont("times",16));
+    setFont(QFont("Times",16));
 }
 
 void Score::hitEnemy(){

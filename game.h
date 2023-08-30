@@ -7,6 +7,9 @@
 #include <QDebug>
 #include <QKeyEvent>
 
+#include <QGraphicsTextItem>
+#include <QFont>
+
 #include "player.h"
 #include "score.h"
 #include "health.h"
@@ -23,6 +26,9 @@ public:
     void gameHelper();
 
     void keyPressEvent(QKeyEvent * event);
+
+    QGraphicsTextItem * startText;
+    QGraphicsTextItem * helperText;
 
     QGraphicsScene * scene;
     Player ** players;
