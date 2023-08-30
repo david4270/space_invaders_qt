@@ -3,7 +3,7 @@
 Health::Health(QGraphicsItem *parent): QGraphicsTextItem(parent){
     health = 100;
     setPlainText(QString("Health: ")+QString::number(health));
-    setDefaultTextColor(Qt::red);
+    setDefaultTextColor(Qt::green);
     setFont(QFont("Times",16));
 
 }
@@ -11,6 +11,9 @@ Health::Health(QGraphicsItem *parent): QGraphicsTextItem(parent){
 void Health::healthDamage(){
     health -= 20;
     setPlainText(QString("Health: ")+QString::number(health));
+    if(health < 40){
+        setDefaultTextColor(Qt::red);
+    }
 }
 
 int Health::getHealth(){
