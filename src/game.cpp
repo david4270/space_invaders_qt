@@ -13,7 +13,7 @@ Game::Game(QWidget *parent){
     setBackgroundBrush(QBrush(QImage(":/images/Startscreen.png")));
 
     startText = new QGraphicsTextItem;
-    startText->setPlainText("Welcome to the game");
+    startText->setPlainText("Space Race");
     startText->setFont(QFont("Comic sans", 48));
     startText->setPos(widthScreen/2 - startText->boundingRect().width()/2,heightScreen/5);
     scene->addItem(startText);
