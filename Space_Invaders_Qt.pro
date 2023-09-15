@@ -9,21 +9,21 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    bullet.cpp \
-    enemy.cpp \
-    game.cpp \
-    health.cpp \
+    $$PWD/src/bullet.cpp \
+    $$PWD/src/enemy.cpp \
+    $$PWD/src/game.cpp \
+    $$PWD/src/health.cpp \
     main.cpp \
-    player.cpp \
-    score.cpp
+    $$PWD/src/player.cpp \
+    $$PWD/src/score.cpp
 
 HEADERS += \
-    bullet.h \
-    enemy.h \
-    game.h \
-    health.h \
-    player.h \
-    score.h
+    $$PWD/src/bullet.h \
+    $$PWD/src/enemy.h \
+    $$PWD/src/game.h \
+    $$PWD/src/health.h \
+    $$PWD/src/player.h \
+    $$PWD/src/score.h
 
 FORMS +=
 
@@ -33,4 +33,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    res.qrc
+    $$PWD/res/res.qrc

@@ -3,7 +3,7 @@
 #include <QGraphicsView>
 #include <QStackedWidget>
 
-#include "game.h"
+#include "src/game.h"
 
 
 Game * game;
