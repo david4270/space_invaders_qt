@@ -1,1 +1,1 @@
-# space_invaders_qt: C++ x Qt Space Invaders Game
+# Space Invaders game - C++ & Qt based arcade game!
