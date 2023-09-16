@@ -6,6 +6,20 @@ extern int heightScreen;
 Game::Game(QWidget *parent){
 
     //numPlayers = np;
+    /*
+    switch(screenState){
+        StartScreen:
+            break;
+        SettingScreen:
+            break;
+        GameStandBy:
+            break;
+        GameScreen:
+            break;
+        default:
+            break;
+    }
+    */
     numPlayers = 0;
 
     scene = new QGraphicsScene();

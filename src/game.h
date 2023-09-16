@@ -15,12 +15,19 @@
 #include "health.h"
 #include "bullet.h"
 
+enum states{
+    StartScreen, // starting screen
+    SettingScreen, // setting
+    GameStandBy, // starting screen, but show # of players
+    GameScreen // playing game
+};
 
 class Game: public QGraphicsView{
 private:
     int numPlayers = 0;
 
 public:
+    enum states screenState = StartScreen;
     Game(QWidget * parent = 0);
     int getNumPlayers();
     void gameHelper();
