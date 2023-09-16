@@ -6,22 +6,14 @@ extern int heightScreen;
 Game::Game(QWidget *parent){
 
     //numPlayers = np;
-    /*
-    switch(screenState){
-        StartScreen:
-            break;
-        SettingScreen:
-            break;
-        GameStandBy:
-            break;
-        GameScreen:
-            break;
-        default:
-            break;
-    }
-    */
-    numPlayers = 0;
+    startScreenHelper();
+}
 
+int Game::getNumPlayers(){
+    return numPlayers;
+}
+
+void Game::startScreenHelper(){
     scene = new QGraphicsScene();
     scene -> setSceneRect(0,0,widthScreen,heightScreen);
     setBackgroundBrush(QBrush(QImage(":/images/Startscreen.png")));
@@ -42,10 +34,6 @@ Game::Game(QWidget *parent){
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(widthScreen,heightScreen);
-}
-
-int Game::getNumPlayers(){
-    return numPlayers;
 }
 
 void Game::gameHelper(){
@@ -96,6 +84,7 @@ void Game::gameHelper(){
 void Game::keyPressEvent(QKeyEvent *event){
     //qDebug() << "Key is pressed" << event->key();
     //qDebug() << numPlayers;
+
 
     if(numPlayers == 0){
         if(event->key() == Qt::Key_1){
