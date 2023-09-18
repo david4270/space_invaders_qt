@@ -113,7 +113,7 @@ void Game::gameHelper(){
     timer->start(1800 + rand() % 400);
 
     QObject::connect(timer2, SIGNAL(timeout()), this, SLOT(playerControl()));
-    timer2->start(40);
+    timer2->start(50);
 
     show();
 
@@ -129,9 +129,7 @@ void Game::gameHelper(){
 }
 
 void Game::playerControl(){
-
     for(int playerNo = 0; playerNo < numPlayers; playerNo++){
-        qDebug() << playerNo << players[playerNo]->playerKeys[0] << players[playerNo]->playerKeys[1] << players[playerNo]->playerKeys[2];
         //left or right
         if(players[playerNo]->playerKeys[0]){
             if(players[playerNo]->x() > widthScreen * playerNo/numPlayers + 5){
@@ -161,10 +159,6 @@ void Game::gameOverHelper(){
 }
 
 void Game::keyPressEvent(QKeyEvent *event){
-    //qDebug() << "Key is pressed" << event->key();
-    //qDebug() << numPlayers;
-
-
 
     if(machine.configuration().contains(startScreen)){
         if(event->key() == Qt::Key_1){
@@ -192,16 +186,13 @@ void Game::keyPressEvent(QKeyEvent *event){
     if(machine.configuration().contains(startTransition)){
         // "Key_Return" converts to Enter - https://stackoverflow.com/questions/25637171/qt-key-pressevent-enter
         if(event->key() == Qt::Key_Return || event->key() == Qt::Key_Space){
-            qDebug() << "Game started!";
+            //qDebug() << "Game started!";
             emit startGame();
         }
         else if(event->key() == Qt::Key_Escape){
-            qDebug() << "Return back to start menu";
+            //qDebug() << "Return back to start menu";
             numPlayers = 0;
             emit backToStart();
-
-            delete helperText;
-            helperText = NULL;
         }
     }
 
@@ -290,101 +281,6 @@ void Game::keyPressEvent(QKeyEvent *event){
                 break;
         }
 
-        /*
-        if(event->key() == Qt::Key_Left){
-            //qDebug() << "Left" << widthScreen *0/numPlayers+5;;
-            if(players[0] != NULL){
-                if(players[0]->x() > widthScreen * 0/numPlayers + 5){
-                    //qDebug() << "Moving left";
-                    players[0]->setPos(players[0]->x()-5 ,players[0]->y());
-                }
-            }
-
-        }
-        if(event->key() == Qt::Key_Right){
-            //qDebug() << "Right" << widthScreen *1/numPlayers-5;
-            if(players[0] != NULL){
-                if(players[0]->x() < (widthScreen * 1/numPlayers) - players[0]->pixmap().width() -5){
-                    //qDebug() << "Moving right";
-                    players[0]->setPos(players[0]->x()+5 ,players[0]->y());
-                }
-            }
-
-        }
-        if(event->key() == Qt::Key_Up){
-            if(players[0] != NULL){
-                qDebug() << "player 0 shoots bullet";
-                Bullet * bullet = new Bullet();
-                bullet->setPos(players[0]->x() + (players[0]->pixmap().width()/2),players[0]->y() -  bullet->pixmap().height());
-                scene->addItem(bullet);
-            }
-
-        }
-        if(event->key() == Qt::Key_A && numPlayers > 1){
-            if(players[1] != NULL){
-                if(players[1]->x() > widthScreen * 1/numPlayers + 5){
-                    players[1]->setPos(players[1]->x()-5 ,players[1]->y());
-                }
-            }
-        }
-        if(event->key() == Qt::Key_D && numPlayers > 1){
-            if(players[1] != NULL){
-                if(players[1]->x() < (widthScreen * 2/numPlayers)- players[1]->pixmap().width() - 5){
-                    players[1]->setPos(players[1]->x()+5 ,players[1]->y());
-                }
-            }
-        }
-        if(event->key() == Qt::Key_W && numPlayers > 1){
-            if(players[1] != NULL){
-                qDebug() << "player 1 shoots bullet";
-                Bullet * bullet = new Bullet();
-                bullet->setPos(players[1]->x() + (players[1]->pixmap().width()/2),players[1]->y() - bullet->pixmap().height());
-                scene->addItem(bullet);
-            }
-        }
-        if(event->key() == Qt::Key_J && numPlayers > 2){
-            if(players[2] != NULL){
-                if(players[2]->x() > widthScreen * 2/numPlayers + 5){
-                    players[2]->setPos(players[2]->x()-5 ,players[2]->y());
-                }
-            }
-        }
-        if(event->key() == Qt::Key_L && numPlayers > 2){
-            if(players[2] != NULL){
-                if(players[2]->x() < (widthScreen * 3/numPlayers)- players[2]->pixmap().width() -5){
-                    players[2]->setPos(players[2]->x()+5 ,players[2]->y());
-                }
-            }
-        }
-        if(event->key() == Qt::Key_I && numPlayers > 2){
-            if(players[2] != NULL){
-                Bullet * bullet = new Bullet();
-                bullet->setPos(players[2]->x()+ (players[2]->pixmap().width()/2),players[2]->y() - bullet->pixmap().height());
-                scene->addItem(bullet);
-            }
-        }
-        if(event->key() == Qt::Key_Delete && numPlayers > 3){
-            if(players[3] != NULL){
-                if(players[3]->x() > widthScreen * 3/numPlayers + 5){
-                    players[3]->setPos(players[3]->x()-5 ,players[3]->y());
-                }
-            }
-        }
-        if(event->key() == Qt::Key_PageDown && numPlayers > 3){
-            if(players[3] != NULL){
-                if(players[3]->x() < (widthScreen * 4/numPlayers) - players[3]->pixmap().width() -5){
-                    players[3]->setPos(players[3]->x()+5 ,players[3]->y());
-                }
-            }
-        }
-        if(event->key() == Qt::Key_Home && numPlayers > 3){
-            if(players[3] != NULL){
-                Bullet * bullet = new Bullet();
-                bullet->setPos(players[3]->x()+ (players[3]->pixmap().width()/2),players[3]->y() - bullet->pixmap().height());
-                scene->addItem(bullet);
-            }
-        }
-        */
     }
 
     if(machine.configuration().contains(gameOver)){
