@@ -4,9 +4,30 @@ extern int widthScreen;
 extern int heightScreen;
 
 Game::Game(QWidget *parent){
+    startScreen = new QState();
+    startTransition = new QState();
+    gameRunning = new QState();
+    gameOver = new QState();
+
+    QObject::connect(startScreen,SIGNAL(entered()),this,SLOT(startScreenHelper()));
+    QObject::connect(startTransition,SIGNAL(entered()),this,SLOT(startTransitionHelper()));
+    QObject::connect(gameRunning,SIGNAL(entered()),this,SLOT(gameHelper()));
+    QObject::connect(gameOver,SIGNAL(entered()),this,SLOT(gameOverHelper()));
+
+    startScreen->addTransition(this, SIGNAL(toPending()), startTransition);
+    startTransition->addTransition(this, SIGNAL(startGame()), gameRunning);
+    startTransition->addTransition(this, SIGNAL(backToStart()), startScreen);
+    gameRunning->addTransition(this,SIGNAL(finishGame()),gameOver);
+    gameOver->addTransition(this,SIGNAL(returnToStart()), startScreen);
+
+    machine.addState(startScreen);
+    machine.addState(gameRunning);
+    machine.addState(gameOver);
+    machine.setInitialState(startScreen);
+    machine.start();
 
     //numPlayers = np;
-    startScreenHelper();
+    //startScreenHelper();
 }
 
 int Game::getNumPlayers(){
@@ -14,6 +35,7 @@ int Game::getNumPlayers(){
 }
 
 void Game::startScreenHelper(){
+    qDebug() << "Running startScreenHelper";
     scene = new QGraphicsScene();
     scene -> setSceneRect(0,0,widthScreen,heightScreen);
     setBackgroundBrush(QBrush(QImage(":/images/Startscreen.png")));
@@ -36,7 +58,12 @@ void Game::startScreenHelper(){
     setFixedSize(widthScreen,heightScreen);
 }
 
+void Game::startTransitionHelper(){
+    qDebug() << "Running startTransitionHelper";
+}
+
 void Game::gameHelper(){
+    qDebug() << "Running gameHelper";
     delete startText;
     startText = NULL;
 
@@ -74,11 +101,41 @@ void Game::gameHelper(){
 
     show();
 
-    for(int i=1; i<numPlayers; i++){
-        scene->addLine((widthScreen/numPlayers)*i,0,(widthScreen/numPlayers)*i,heightScreen);
+    for(int i=0; i<numPlayers; i++){
+        if(i>0){
+            scene->addLine((widthScreen/numPlayers)*i,0,(widthScreen/numPlayers)*i,heightScreen);
+        }
+        playerControl(i);
         this->update();
     }
 
+}
+
+void Game::playerControl(int playerNo){
+    //left or right
+    if(players[playerNo]->playerKeys[0]){
+        if(players[playerNo]->x() > widthScreen * playerNo/numPlayers + 5){
+            qDebug() << "player " << playerNo << "Moving left";
+            players[playerNo]->setPos(players[playerNo]->x()-5 ,players[playerNo]->y());
+        }
+    }
+    else if(players[playerNo]->playerKeys[2]){
+        if(players[playerNo]->x() < (widthScreen * (playerNo+1)/numPlayers) - players[0]->pixmap().width() -5){
+            qDebug() << "player " << playerNo << "Moving right";
+            players[playerNo]->setPos(players[playerNo]->x()+5 ,players[playerNo]->y());
+        }
+    }
+    //bullet
+    if(players[playerNo]->playerKeys[1]){
+        qDebug() << "player " << playerNo << " shoots bullet";
+        Bullet * bullet = new Bullet();
+        bullet->setPos(players[playerNo]->x() + (players[playerNo]->pixmap().width()/2),players[playerNo]->y() -  bullet->pixmap().height());
+        scene->addItem(bullet);
+    }
+}
+
+void Game::gameOverHelper(){
+    qDebug() << "Running gameOverHelper";
 }
 
 void Game::keyPressEvent(QKeyEvent *event){
@@ -86,29 +143,128 @@ void Game::keyPressEvent(QKeyEvent *event){
     //qDebug() << numPlayers;
 
 
-    if(numPlayers == 0){
+
+    if(machine.configuration().contains(startScreen)){
         if(event->key() == Qt::Key_1){
             qDebug() << "1 player";
             numPlayers = 1;
-            gameHelper();
+            emit toPending();
         }
         else if(event->key() == Qt::Key_2){
             qDebug() << "2 player";
             numPlayers = 2;
-            gameHelper();
+            emit toPending();
         }
         else if(event->key() == Qt::Key_3){
             qDebug() << "3 player";
             numPlayers = 3;
-            gameHelper();
+            emit toPending();
         }
         else if(event->key() == Qt::Key_4){
             qDebug() << "4 player";
             numPlayers = 4;
-            gameHelper();
+            emit toPending();
+        }
+        //gameHelper();
+    }
+    if(machine.configuration().contains(startTransition)){
+        if(numPlayers > 0 && (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Space)){
+            qDebug() << "Game started!";
+            emit startGame();
+        }
+        else if(event->key() == Qt::Key_Escape){
+            qDebug() << "Return back to start menu";
+            numPlayers = 0;
+            emit backToStart();
         }
     }
-    else{
+
+    if(machine.configuration().contains(gameRunning)){
+        switch(event->key()){
+            case Qt::Key_Left:
+                if(players[0] != NULL){
+                    players[0]->playerKeys[0] = 1;
+                }
+                break;
+            case Qt::Key_Up:
+                if(players[0] != NULL){
+                    players[0]->playerKeys[1] = 1;
+                }
+                break;
+            case Qt::Key_Right:
+                if(players[0] != NULL){
+                    players[0]->playerKeys[2] = 1;
+                }
+                break;
+            case Qt::Key_A:
+                if(numPlayers > 1){
+                    if(players[1] != NULL){
+                        players[1]->playerKeys[0] = 1;
+                    }
+                }
+                break;
+            case Qt::Key_W:
+                if(numPlayers > 1){
+                    if(players[1] != NULL){
+                        players[1]->playerKeys[1] = 1;
+                    }
+                }
+                break;
+            case Qt::Key_D:
+                if(numPlayers > 1){
+                    if(players[1] != NULL){
+                        players[1]->playerKeys[2] = 1;
+                    }
+                }
+                break;
+
+            case Qt::Key_J:
+                if(numPlayers > 2){
+                    if(players[2] != NULL){
+                        players[2]->playerKeys[0] = 1;
+                    }
+                }
+                break;
+            case Qt::Key_I:
+                if(numPlayers > 2){
+                    if(players[2] != NULL){
+                        players[2]->playerKeys[1] = 1;
+                    }
+                }
+                break;
+            case Qt::Key_L:
+                if(numPlayers > 2){
+                    if(players[2] != NULL){
+                        players[2]->playerKeys[2] = 1;
+                    }
+                }
+                break;
+            case Qt::Key_Delete:
+                if(numPlayers > 3){
+                    if(players[3] != NULL){
+                        players[3]->playerKeys[0] = 1;
+                    }
+                }
+                break;
+            case Qt::Key_Home:
+                if(numPlayers > 3){
+                    if(players[3] != NULL){
+                        players[3]->playerKeys[1] = 1;
+                    }
+                }
+                break;
+            case Qt::Key_PageDown:
+                if(numPlayers > 3){
+                    if(players[3] != NULL){
+                        players[3]->playerKeys[2] = 1;
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+
+        /*
         if(event->key() == Qt::Key_Left){
             //qDebug() << "Left" << widthScreen *0/numPlayers+5;;
             if(players[0] != NULL){
@@ -202,7 +358,107 @@ void Game::keyPressEvent(QKeyEvent *event){
                 scene->addItem(bullet);
             }
         }
+        */
+    }
+
+    if(machine.configuration().contains(gameOver)){
+        if(event->key() == Qt::Key_Enter || event->key() == Qt::Key_Space || event->key() == Qt::Key_Escape){
+            qDebug() << "Return back to start menu";
+            numPlayers = 0;
+            emit returnToStart();
+        }
     }
 
 
 }
+
+void Game::keyReleaseEvent(QKeyEvent *event){
+    if(machine.configuration().contains(gameRunning) && !event->isAutoRepeat()){
+        switch(event->key()){
+            case Qt::Key_Left:
+                if(players[0] != NULL){
+                    players[0]->playerKeys[0] = 0;
+                }
+                break;
+            case Qt::Key_Up:
+                if(players[0] != NULL){
+                    players[0]->playerKeys[1] = 0;
+                }
+                break;
+            case Qt::Key_Right:
+                if(players[0] != NULL){
+                    players[0]->playerKeys[2] = 0;
+                }
+                break;
+            case Qt::Key_A:
+                if(numPlayers > 1){
+                    if(players[1] != NULL){
+                        players[1]->playerKeys[0] = 0;
+                    }
+                }
+                break;
+            case Qt::Key_W:
+                if(numPlayers > 1){
+                    if(players[1] != NULL){
+                        players[1]->playerKeys[1] = 0;
+                    }
+                }
+                break;
+            case Qt::Key_D:
+                if(numPlayers > 1){
+                    if(players[1] != NULL){
+                        players[1]->playerKeys[2] = 0;
+                    }
+                }
+                break;
+
+            case Qt::Key_J:
+                if(numPlayers > 2){
+                    if(players[2] != NULL){
+                        players[2]->playerKeys[0] = 0;
+                    }
+                }
+                break;
+            case Qt::Key_I:
+                if(numPlayers > 2){
+                    if(players[2] != NULL){
+                        players[2]->playerKeys[1] = 0;
+                    }
+                }
+                break;
+            case Qt::Key_L:
+                if(numPlayers > 2){
+                    if(players[2] != NULL){
+                        players[2]->playerKeys[2] = 0;
+                    }
+                }
+                break;
+            case Qt::Key_Delete:
+                if(numPlayers > 3){
+                    if(players[3] != NULL){
+                        players[3]->playerKeys[0] = 0;
+                    }
+                }
+                break;
+            case Qt::Key_Home:
+                if(numPlayers > 3){
+                    if(players[3] != NULL){
+                        players[3]->playerKeys[1] = 0;
+                    }
+                }
+                break;
+            case Qt::Key_PageDown:
+                if(numPlayers > 3){
+                    if(players[3] != NULL){
+                        players[3]->playerKeys[2] = 0;
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+     }
+
+}
+
+

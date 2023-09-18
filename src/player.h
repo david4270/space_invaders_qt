@@ -21,6 +21,8 @@ public:
     int getPlayerNo();
     void setPlayerNo(int no);
 
+    int playerKeys[3]; // 0 left, 1 bullet, 2 right
+
     //Score * score;
     //Health * health;
 public slots:
