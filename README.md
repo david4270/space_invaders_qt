@@ -30,7 +30,7 @@ You can also play with your friends, as this game supports up to 4 players (1-4)
 <Updates>
 - Added state machines to the game logic
 - Now accepting multiple keys - smoother key inputs for multiplayer mode
-- 
+
 <Bugs>
 - The program may crash when the key input is provided while the other player is slained
 - The game needs to be more presentable 
