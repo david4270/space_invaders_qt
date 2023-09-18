@@ -4,10 +4,10 @@ extern int widthScreen;
 extern int heightScreen;
 
 Game::Game(QWidget *parent){
-    startScreen = new QState();
-    startTransition = new QState();
-    gameRunning = new QState();
-    gameOver = new QState();
+    startScreen = new QState(&machine);
+    startTransition = new QState(&machine);
+    gameRunning = new QState(&machine);
+    gameOver = new QState(&machine);
 
     QObject::connect(startScreen,SIGNAL(entered()),this,SLOT(startScreenHelper()));
     QObject::connect(startTransition,SIGNAL(entered()),this,SLOT(startTransitionHelper()));
@@ -20,9 +20,9 @@ Game::Game(QWidget *parent){
     gameRunning->addTransition(this,SIGNAL(finishGame()),gameOver);
     gameOver->addTransition(this,SIGNAL(returnToStart()), startScreen);
 
-    machine.addState(startScreen);
-    machine.addState(gameRunning);
-    machine.addState(gameOver);
+    //machine.addState(startScreen);
+    //machine.addState(gameRunning);
+    //machine.addState(gameOver);
     machine.setInitialState(startScreen);
     machine.start();
 
@@ -60,6 +60,15 @@ void Game::startScreenHelper(){
 
 void Game::startTransitionHelper(){
     qDebug() << "Running startTransitionHelper";
+
+    delete helperText;
+    helperText = NULL;
+
+    helperText = new QGraphicsTextItem;
+    helperText->setPlainText(QString::number(numPlayers) + " players selected. Press [Enter] or [Space] to proceed");
+    helperText->setFont(QFont("Comic sans", 16));
+    helperText->setPos(widthScreen/2 - helperText->boundingRect().width()/2,4*heightScreen/5);
+    scene->addItem(helperText);
 }
 
 void Game::gameHelper(){
@@ -168,7 +177,8 @@ void Game::keyPressEvent(QKeyEvent *event){
         //gameHelper();
     }
     if(machine.configuration().contains(startTransition)){
-        if(numPlayers > 0 && (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Space)){
+        // "Key_Return" converts to Enter - https://stackoverflow.com/questions/25637171/qt-key-pressevent-enter
+        if(event->key() == Qt::Key_Return || event->key() == Qt::Key_Space){
             qDebug() << "Game started!";
             emit startGame();
         }
@@ -176,6 +186,9 @@ void Game::keyPressEvent(QKeyEvent *event){
             qDebug() << "Return back to start menu";
             numPlayers = 0;
             emit backToStart();
+
+            delete helperText;
+            helperText = NULL;
         }
     }
 
