@@ -7,10 +7,11 @@ My first game project is a variation of Space Race, where you shoot the enemies 
 
 You can also play with your friends, as this game supports up to 4 players (1-4)!
 
-### Version
+# Version
 - Alpha version, yet to be compiled as a standalone program.
 - Based on Qt6 and C++
 
+# Updates
 ### 230918
 ```
 <Updates>
@@ -20,7 +21,7 @@ You can also play with your friends, as this game supports up to 4 players (1-4)
 - The program may crash if the number of players is being set more than once after playing one or more games
 - The game needs to be more presentable 
 ```
-### Potential Improvements
+# Potential Improvements
 1) Return to the starting screen once all the players are killed **[WIP]**
 2) Announce the winner if only one player survives (when there are 2+ players)
 3) Accept multiple keys at the instant so that the multiplayer mode can be smoother **[Done - 230918]**
