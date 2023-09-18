@@ -38,7 +38,7 @@ void Game::startScreenHelper(){
     qDebug() << "Running startScreenHelper";
     scene = new QGraphicsScene();
     scene -> setSceneRect(0,0,widthScreen,heightScreen);
-    setBackgroundBrush(QBrush(QImage(":/images/Startscreen.png")));
+    setBackgroundBrush(QBrush(QImage(":/images/space1.jpg").scaledToWidth(widthScreen)));
 
     startText = new QGraphicsTextItem;
     startText->setPlainText("Space Race");
@@ -88,7 +88,7 @@ void Game::gameHelper(){
     delete helperText;
     helperText = NULL;
 
-    setBackgroundBrush(QBrush(QImage(":/images/Background2.png")));
+    setBackgroundBrush(QBrush(QImage(":/images/space2.jpg").scaledToWidth(widthScreen)));
     QTimer * timer = new QTimer();
     QTimer * timer2 = new QTimer();
 
@@ -186,7 +186,7 @@ void Game::playerControl(){
 void Game::gameOverHelper(){
     qDebug() << "Running gameOverHelper";
     scene->clear();
-    setBackgroundBrush(QBrush(QImage(":/images/Startscreen.png")));
+    setBackgroundBrush(QBrush(QImage(":/images/space5.jpg").scaledToWidth(widthScreen)));
 
     startText = new QGraphicsTextItem;
     startText->setPlainText("Game Over!");
@@ -196,7 +196,7 @@ void Game::gameOverHelper(){
     scene->addItem(startText);
 
     helperText = new QGraphicsTextItem;
-    helperText->setPlainText("Player " + QString::number(winnerIdx) + " won! Press [Esc], [Enter] or [Space] to replay...");
+    helperText->setPlainText("Player " + QString::number(winnerIdx+1) + " won! Press [Esc], [Enter] or [Space] to replay...");
     helperText->setFont(QFont("Helvetica", 16));
     helperText->setDefaultTextColor(Qt::white);
     helperText->setPos(widthScreen/2 - helperText->boundingRect().width()/2,4*heightScreen/5);

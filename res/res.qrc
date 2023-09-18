@@ -6,5 +6,10 @@
         <file>Player.png</file>
         <file>Background2.png</file>
         <file>Startscreen.png</file>
+        <file>space1.jpg</file>
+        <file>space2.jpg</file>
+        <file>space3.jpg</file>
+        <file>space4.jpg</file>
+        <file>space5.jpg</file>
     </qresource>
 </RCC>
