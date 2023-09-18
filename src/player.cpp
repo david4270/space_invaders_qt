@@ -1,6 +1,7 @@
 #include "player.h"
 #include "bullet.h"
 #include "enemy.h"
+#include "player.h"
 
 
 Player::Player(int no, int tp, QGraphicsItem *parent): QObject(), QGraphicsPixmapItem(parent){
@@ -22,3 +23,4 @@ void Player::spawn(){
     Enemy * enemy = new Enemy(playerNo);
     scene()->addItem(enemy);
 }
+

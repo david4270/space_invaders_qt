@@ -81,6 +81,7 @@ void Game::gameHelper(){
 
     setBackgroundBrush(QBrush(QImage(":/images/Background2.png")));
     QTimer * timer = new QTimer();
+    QTimer * timer2 = new QTimer();
 
     players = new Player * [numPlayers];
     scores = new Score * [numPlayers];
@@ -92,6 +93,9 @@ void Game::gameHelper(){
         //players[i]->setFlag(QGraphicsItem::ItemIsFocusable);
         //players[i]->setFocus();
         players[i]->setPos(scene->width() * (2*i + 1)/ (2 * numPlayers), scene->height() - players[i]->pixmap().height());
+        players[i]->playerKeys[0] = 0;
+        players[i]->playerKeys[1] = 0;
+        players[i]->playerKeys[2] = 0;
         // add item to the scene
         scene->addItem(players[i]);
 
@@ -108,38 +112,47 @@ void Game::gameHelper(){
 
     timer->start(1800 + rand() % 400);
 
+    QObject::connect(timer2, SIGNAL(timeout()), this, SLOT(playerControl()));
+    timer2->start(40);
+
     show();
 
     for(int i=0; i<numPlayers; i++){
         if(i>0){
             scene->addLine((widthScreen/numPlayers)*i,0,(widthScreen/numPlayers)*i,heightScreen);
         }
-        playerControl(i);
+
+        //playerControl(i);
         this->update();
     }
 
 }
 
-void Game::playerControl(int playerNo){
-    //left or right
-    if(players[playerNo]->playerKeys[0]){
-        if(players[playerNo]->x() > widthScreen * playerNo/numPlayers + 5){
-            qDebug() << "player " << playerNo << "Moving left";
-            players[playerNo]->setPos(players[playerNo]->x()-5 ,players[playerNo]->y());
+void Game::playerControl(){
+
+    for(int playerNo = 0; playerNo < numPlayers; playerNo++){
+        qDebug() << playerNo << players[playerNo]->playerKeys[0] << players[playerNo]->playerKeys[1] << players[playerNo]->playerKeys[2];
+        //left or right
+        if(players[playerNo]->playerKeys[0]){
+            if(players[playerNo]->x() > widthScreen * playerNo/numPlayers + 5){
+                qDebug() << "player " << playerNo << "Moving left";
+                players[playerNo]->setPos(players[playerNo]->x()-5 ,players[playerNo]->y());
+            }
         }
-    }
-    else if(players[playerNo]->playerKeys[2]){
-        if(players[playerNo]->x() < (widthScreen * (playerNo+1)/numPlayers) - players[0]->pixmap().width() -5){
-            qDebug() << "player " << playerNo << "Moving right";
-            players[playerNo]->setPos(players[playerNo]->x()+5 ,players[playerNo]->y());
+        else if(players[playerNo]->playerKeys[2]){
+            if(players[playerNo]->x() < (widthScreen * (playerNo+1)/numPlayers) - players[0]->pixmap().width() -5){
+                qDebug() << "player " << playerNo << "Moving right";
+                players[playerNo]->setPos(players[playerNo]->x()+5 ,players[playerNo]->y());
+            }
         }
-    }
-    //bullet
-    if(players[playerNo]->playerKeys[1]){
-        qDebug() << "player " << playerNo << " shoots bullet";
-        Bullet * bullet = new Bullet();
-        bullet->setPos(players[playerNo]->x() + (players[playerNo]->pixmap().width()/2),players[playerNo]->y() -  bullet->pixmap().height());
-        scene->addItem(bullet);
+        //bullet
+        if(players[playerNo]->playerKeys[1]){
+            qDebug() << "player " << playerNo << " shoots bullet";
+            Bullet * bullet = new Bullet();
+            bullet->setPos(players[playerNo]->x() + (players[playerNo]->pixmap().width()/2),players[playerNo]->y() -  bullet->pixmap().height());
+            scene->addItem(bullet);
+        }
+
     }
 }
 

@@ -45,16 +45,18 @@ public:
     Game(QWidget * parent = 0);
     int getNumPlayers();
 
-    Q_SLOT void startScreenHelper();
-    Q_SLOT void startTransitionHelper();
-    Q_SLOT void gameHelper();
-    void playerControl(int playerNo);
-    Q_SLOT void gameOverHelper();
+
 
     void keyReleaseEvent(QKeyEvent * event);
 
 
 public slots:
+    void startScreenHelper();
+    void startTransitionHelper();
+    void gameHelper();
+    void playerControl();
+    void gameOverHelper();
+
     void keyPressEvent(QKeyEvent * event);
 
 
