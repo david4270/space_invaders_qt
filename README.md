@@ -7,6 +7,13 @@ My first game project is a variation of Space Race, where you shoot the enemies 
 
 You can also play with your friends, as this game supports up to 4 players (1-4)!
 
+# Screenshot
+<img src = "https://github.com/david4270/space_race_qt/blob/main/files/gameplay.jpg?raw=true" width = "50%">
+
+# Description
+<img src = "https://github.com/david4270/space_race_qt/blob/main/files/Player%20Logic.jpg?raw=true" width = "50%">
+<img src = "https://github.com/david4270/space_race_qt/blob/main/files/Game%20Logic.jpg?raw=true" width = "50%">
+
 # Version
 - Alpha version, yet to be compiled as a standalone program.
 - Based on Qt6 and C++
