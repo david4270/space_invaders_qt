@@ -26,7 +26,7 @@ class Game: public QGraphicsView{
     Q_OBJECT
 private:
     int numPlayers = 0;
-
+    int winnerIdx = -1;
     int activePlayer[4];
 
     QStateMachine machine;

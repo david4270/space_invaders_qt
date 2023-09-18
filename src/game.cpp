@@ -20,10 +20,6 @@ Game::Game(QWidget *parent){
     gameRunning->addTransition(this,SIGNAL(finishGame()),gameOver);
     gameOver->addTransition(this,SIGNAL(returnToStart()), startScreen);
 
-    for(int i = 0; i < 4; i++){
-        activePlayer[i] = 0;
-    }
-
     //machine.addState(startScreen);
     //machine.addState(gameRunning);
     //machine.addState(gameOver);
@@ -62,6 +58,12 @@ void Game::startScreenHelper(){
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(widthScreen,heightScreen);
+
+    for(int i = 0; i < 4; i++){
+        activePlayer[i] = 0;
+    }
+
+    winnerIdx = -1;
 }
 
 void Game::startTransitionHelper(){
@@ -138,24 +140,25 @@ void Game::gameHelper(){
 
 void Game::playerControl(){
     int playerActive = 0;
+    //qDebug() << numPlayers;
     for(int playerNo = 0; playerNo < numPlayers; playerNo++){
-        if(players[playerNo]!=NULL){
+        if(machine.configuration().contains(gameRunning) && players[playerNo]!=NULL){
             //left or right
             if(players[playerNo]->playerKeys[0]){
                 if(players[playerNo]->x() > widthScreen * playerNo/numPlayers + 5){
-                    //qDebug() << "player " << playerNo << "Moving left";
+                    qDebug() << "player " << playerNo << "Moving left";
                     players[playerNo]->setPos(players[playerNo]->x()-5 ,players[playerNo]->y());
                 }
             }
             else if(players[playerNo]->playerKeys[2]){
                 if(players[playerNo]->x() < (widthScreen * (playerNo+1)/numPlayers) - players[0]->pixmap().width() -5){
-                    //qDebug() << "player " << playerNo << "Moving right";
+                    qDebug() << "player " << playerNo << "Moving right";
                     players[playerNo]->setPos(players[playerNo]->x()+5 ,players[playerNo]->y());
                 }
             }
             //bullet
             if(players[playerNo]->playerKeys[1]){
-                //qDebug() << "player " << playerNo << " shoots bullet";
+                qDebug() << "player " << playerNo << " shoots bullet";
                 Bullet * bullet = new Bullet();
                 bullet->setPos(players[playerNo]->x() + (players[playerNo]->pixmap().width()/2),players[playerNo]->y() -  bullet->pixmap().height());
                 scene->addItem(bullet);
@@ -167,7 +170,15 @@ void Game::playerControl(){
         }
     }
 
-    if((playerActive == 0 && numPlayers == 1) || (playerActive == 1 && numPlayers > 1)){
+    if ((playerActive == 0 && numPlayers == 1)||(playerActive == 1 && numPlayers > 1)){
+        if(playerActive == 1){
+            for(int i = 0; i < numPlayers; i++){
+                if(activePlayer[i] == 1){
+                    winnerIdx = i;
+                    break;
+                }
+            }
+        }
         emit finishGame();
     }
 }
@@ -175,6 +186,44 @@ void Game::playerControl(){
 void Game::gameOverHelper(){
     qDebug() << "Running gameOverHelper";
     scene->clear();
+    setBackgroundBrush(QBrush(QImage(":/images/Startscreen.png")));
+
+    startText = new QGraphicsTextItem;
+    startText->setPlainText("Game Over!");
+    startText->setFont(QFont("Comic Sans", 48, QFont::Bold));
+    startText->setDefaultTextColor(Qt::white);
+    startText->setPos(widthScreen/2 - startText->boundingRect().width()/2,heightScreen/5);
+    scene->addItem(startText);
+
+    helperText = new QGraphicsTextItem;
+    helperText->setPlainText("Player " + QString::number(winnerIdx) + " won! Press [Esc], [Enter] or [Space] to replay...");
+    helperText->setFont(QFont("Helvetica", 16));
+    helperText->setDefaultTextColor(Qt::white);
+    helperText->setPos(widthScreen/2 - helperText->boundingRect().width()/2,4*heightScreen/5);
+    scene->addItem(helperText);
+
+
+    /*
+    for(int i = 0; i < numPlayers; i++){
+        if(players[i] != NULL){
+            delete players[i];
+            players[i] = NULL;
+            delete scores[i];
+            scores[i] = NULL;
+            delete healths[i];
+            scores[i] = NULL;
+        }
+    }
+
+    delete players;
+    players = NULL;
+
+    delete scores;
+    scores = NULL;
+
+    delete healths;
+    healths = NULL;
+    */
 
     // destroy everything, declare winner
 }
