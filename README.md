@@ -29,7 +29,7 @@ You can also play with your friends, as this game supports up to 4 players (1-4)
 - The game needs to be more presentable 
 ```
 # Potential Improvements
-1) ~Return to the starting screen once all the players are killed~ **[WIP]**
+1) ~Return to the starting screen once all the players are killed~ **[Done - 230918]**
 2) ~Announce the winner if only one player survives (when there are 2+ players)~ **[Done - 230918]**
 3) ~Accept multiple keys at the instant so that the multiplayer mode can be smoother~ **[Done - 230918]**
 4) Add variations to enemies (more/less damage, shoot bullets back, etc)
