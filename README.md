@@ -12,19 +12,25 @@ You can also play with your friends, as this game supports up to 4 players (1-4)
 - Based on Qt6 and C++
 
 # Updates
+### 230830
+```
+- Multiplayer mode working
+- Starting screen added
+```
+
 ### 230918
 ```
 <Updates>
 - Added state machines to the game logic
-- Now accepting multiple keys - smoother multiplayer support
+- Now accepting multiple keys - smoother key inputs for multiplayer mode
 <Bugs>
 - The program may crash if the number of players is being set more than once after playing one or more games
 - The game needs to be more presentable 
 ```
 # Potential Improvements
 1) Return to the starting screen once all the players are killed **[WIP]**
-2) Announce the winner if only one player survives (when there are 2+ players)
-3) Accept multiple keys at the instant so that the multiplayer mode can be smoother **[Done - 230918]**
+2) Announce the winner if only one player survives (when there are 2+ players) **[WIP]**
+3) ~Accept multiple keys at the instant so that the multiplayer mode can be smoother~ **[Done - 230918]**
 4) Add variations to enemies (more/less damage, shoot bullets back, etc)
 5) Add other items - health refuel, x2 points, etc
 6) Add difficulty
