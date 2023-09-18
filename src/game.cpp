@@ -42,13 +42,15 @@ void Game::startScreenHelper(){
 
     startText = new QGraphicsTextItem;
     startText->setPlainText("Space Race");
-    startText->setFont(QFont("Comic sans", 48));
+    startText->setFont(QFont("Comic Sans", 48, QFont::Bold));
+    startText->setDefaultTextColor(Qt::white);
     startText->setPos(widthScreen/2 - startText->boundingRect().width()/2,heightScreen/5);
     scene->addItem(startText);
 
     helperText = new QGraphicsTextItem;
     helperText->setPlainText("Press 1-4 to select # of players");
-    helperText->setFont(QFont("Comic sans", 16));
+    helperText->setFont(QFont("Aptos", 16));
+    helperText->setDefaultTextColor(Qt::white);
     helperText->setPos(widthScreen/2 - helperText->boundingRect().width()/2,4*heightScreen/5);
     scene->addItem(helperText);
 
@@ -66,7 +68,8 @@ void Game::startTransitionHelper(){
 
     helperText = new QGraphicsTextItem;
     helperText->setPlainText(QString::number(numPlayers) + " players selected. Press [Enter] or [Space] to proceed");
-    helperText->setFont(QFont("Comic sans", 16));
+    helperText->setFont(QFont("Helvetica", 16));
+    helperText->setDefaultTextColor(Qt::white);
     helperText->setPos(widthScreen/2 - helperText->boundingRect().width()/2,4*heightScreen/5);
     scene->addItem(helperText);
 }
@@ -129,33 +132,43 @@ void Game::gameHelper(){
 }
 
 void Game::playerControl(){
+    int playerActive = 0;
     for(int playerNo = 0; playerNo < numPlayers; playerNo++){
-        //left or right
-        if(players[playerNo]->playerKeys[0]){
-            if(players[playerNo]->x() > widthScreen * playerNo/numPlayers + 5){
-                qDebug() << "player " << playerNo << "Moving left";
-                players[playerNo]->setPos(players[playerNo]->x()-5 ,players[playerNo]->y());
+        if(players[playerNo]!=NULL){
+            //left or right
+            if(players[playerNo]->playerKeys[0]){
+                if(players[playerNo]->x() > widthScreen * playerNo/numPlayers + 5){
+                    //qDebug() << "player " << playerNo << "Moving left";
+                    players[playerNo]->setPos(players[playerNo]->x()-5 ,players[playerNo]->y());
+                }
             }
-        }
-        else if(players[playerNo]->playerKeys[2]){
-            if(players[playerNo]->x() < (widthScreen * (playerNo+1)/numPlayers) - players[0]->pixmap().width() -5){
-                qDebug() << "player " << playerNo << "Moving right";
-                players[playerNo]->setPos(players[playerNo]->x()+5 ,players[playerNo]->y());
+            else if(players[playerNo]->playerKeys[2]){
+                if(players[playerNo]->x() < (widthScreen * (playerNo+1)/numPlayers) - players[0]->pixmap().width() -5){
+                    //qDebug() << "player " << playerNo << "Moving right";
+                    players[playerNo]->setPos(players[playerNo]->x()+5 ,players[playerNo]->y());
+                }
             }
+            //bullet
+            if(players[playerNo]->playerKeys[1]){
+                //qDebug() << "player " << playerNo << " shoots bullet";
+                Bullet * bullet = new Bullet();
+                bullet->setPos(players[playerNo]->x() + (players[playerNo]->pixmap().width()/2),players[playerNo]->y() -  bullet->pixmap().height());
+                scene->addItem(bullet);
+            }
+            playerActive++;
         }
-        //bullet
-        if(players[playerNo]->playerKeys[1]){
-            qDebug() << "player " << playerNo << " shoots bullet";
-            Bullet * bullet = new Bullet();
-            bullet->setPos(players[playerNo]->x() + (players[playerNo]->pixmap().width()/2),players[playerNo]->y() -  bullet->pixmap().height());
-            scene->addItem(bullet);
-        }
+    }
 
+    if(playerActive == 0){
+        emit finishGame();
     }
 }
 
 void Game::gameOverHelper(){
     qDebug() << "Running gameOverHelper";
+    scene->clear();
+
+    // destroy everything, declare winner
 }
 
 void Game::keyPressEvent(QKeyEvent *event){
@@ -284,7 +297,7 @@ void Game::keyPressEvent(QKeyEvent *event){
     }
 
     if(machine.configuration().contains(gameOver)){
-        if(event->key() == Qt::Key_Enter || event->key() == Qt::Key_Space || event->key() == Qt::Key_Escape){
+        if(event->key() == Qt::Key_Return || event->key() == Qt::Key_Space || event->key() == Qt::Key_Escape){
             qDebug() << "Return back to start menu";
             numPlayers = 0;
             emit returnToStart();

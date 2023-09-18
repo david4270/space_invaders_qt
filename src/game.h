@@ -44,9 +44,6 @@ public:
 
     Game(QWidget * parent = 0);
     int getNumPlayers();
-
-
-
     void keyReleaseEvent(QKeyEvent * event);
 
 
