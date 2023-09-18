@@ -7,11 +7,11 @@
 #include <QDebug>
 #include <QKeyEvent>
 
-#include <QtStateMachine/QStateMachine>
-#include <QtStateMachine/QAbstractState>
-#include <QtStateMachine/QState>
-#include <QtStateMachine/QSignalTransition>
-#include <QtStateMachine/QKeyEventTransition>
+#include <QState>
+#include <QAbstractState>
+#include <QStateMachine>
+#include <QSignalTransition>
+#include <QKeyEventTransition>
 
 #include <QGraphicsTextItem>
 #include <QFont>
@@ -26,6 +26,8 @@ class Game: public QGraphicsView{
     Q_OBJECT
 private:
     int numPlayers = 0;
+
+    int activePlayer[4];
 
     QStateMachine machine;
     QState * startScreen;

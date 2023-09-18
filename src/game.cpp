@@ -20,6 +20,10 @@ Game::Game(QWidget *parent){
     gameRunning->addTransition(this,SIGNAL(finishGame()),gameOver);
     gameOver->addTransition(this,SIGNAL(returnToStart()), startScreen);
 
+    for(int i = 0; i < 4; i++){
+        activePlayer[i] = 0;
+    }
+
     //machine.addState(startScreen);
     //machine.addState(gameRunning);
     //machine.addState(gameOver);
@@ -90,7 +94,6 @@ void Game::gameHelper(){
     scores = new Score * [numPlayers];
     healths = new Health * [numPlayers];
 
-
     for(int i = 0; i < numPlayers; i++){
         players[i] = new Player(i, numPlayers);
         //players[i]->setFlag(QGraphicsItem::ItemIsFocusable);
@@ -101,6 +104,8 @@ void Game::gameHelper(){
         players[i]->playerKeys[2] = 0;
         // add item to the scene
         scene->addItem(players[i]);
+
+        activePlayer[i] = 1;
 
         scores[i] = new Score();
         scores[i]->setPos( ((scene->width() * (2*i))/ (2 * numPlayers))+5, 5);
@@ -157,9 +162,12 @@ void Game::playerControl(){
             }
             playerActive++;
         }
+        else{
+            activePlayer[playerNo] = 0;
+        }
     }
 
-    if(playerActive == 0){
+    if((playerActive == 0 && numPlayers == 1) || (playerActive == 1 && numPlayers > 1)){
         emit finishGame();
     }
 }
